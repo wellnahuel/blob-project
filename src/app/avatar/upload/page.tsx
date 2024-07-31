@@ -1,31 +1,31 @@
-'use client';
- 
-import { type PutBlobResult } from '@vercel/blob';
-import { upload } from '@vercel/blob/client';
-import { useState, useRef } from 'react';
- 
+"use client";
+
+import { type PutBlobResult } from "@vercel/blob";
+import { upload } from "@vercel/blob/client";
+import { useRef, useState } from "react";
+
 export default function AvatarUploadPage() {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   return (
     <>
       <h1>Upload Your Avatar</h1>
- 
+
       <form
         onSubmit={async (event) => {
           event.preventDefault();
- 
+
           if (!inputFileRef.current?.files) {
-            throw new Error('No file selected');
+            throw new Error("No file selected");
           }
- 
+
           const file = inputFileRef.current.files[0];
- 
+
           const newBlob = await upload(file.name, file, {
-            access: 'public',
-            handleUploadUrl: '/api/avatar/upload',
+            access: "public",
+            handleUploadUrl: "/api/avatar/upload",
           });
- 
+
           setBlob(newBlob);
         }}
       >

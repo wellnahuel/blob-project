@@ -20,6 +20,7 @@ export default function AvatarUploadPage() {
           }
 
           const file = inputFileRef.current.files[0];
+          console.log(file);
 
           const newBlob = await upload(file.name, file, {
             access: "public",

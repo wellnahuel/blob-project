@@ -1,12 +1,22 @@
 "use client";
 
-import { type PutBlobResult } from "@vercel/blob";
+import { PutBlobResult } from "@vercel/blob";
 import { useRef, useState } from "react";
+import Modal from "./components/Modal";
+import UploadForm from "./components/UploadForm";
+
+/**
+ * `AvatarUploadPage` is a page component for uploading avatars.
+ *
+ * This component allows users to select a file, upload it to a server, and manage the file upload state.
+ * It also displays a modal with messages about the upload status and the link to the uploaded file.
+ *
+ * @returns {JSX.Element} The component that represents the avatar upload page.
+ */
 
 export default function AvatarUploadPage() {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
@@ -23,8 +33,6 @@ export default function AvatarUploadPage() {
 
     if (!inputFileRef.current?.files) {
       setModalContent("No file selected");
-      console.log(modalContent);
-
       setShowModal(true);
       return;
     }
@@ -33,10 +41,8 @@ export default function AvatarUploadPage() {
 
     if (file.size > 5 * 1024 * 1024) {
       setModalContent(
-        "El archivo supera el límite de 5MB. Por favor seleccione un archivo más pequeño."
+        "The file exceeds the 5MB limit. Please select a smaller file."
       );
-      console.log(modalContent);
-
       setShowModal(true);
       return;
     }
@@ -44,13 +50,10 @@ export default function AvatarUploadPage() {
     try {
       // Notify API call started
       await notifyApiCall("pokemon", "POST"); // Example endpoint for 'upload started'
-      setModalContent("Archivo subiendose.");
-      console.log(modalContent);
-
+      setModalContent("File uploading.");
       setShowModal(true);
 
       // Start uploading the file
-      // Enviar el archivo junto con su nombre
       const newBlob = await fetch(
         `/api/upload?filename=${encodeURIComponent(file.name)}`,
         {
@@ -60,55 +63,41 @@ export default function AvatarUploadPage() {
       ).then((res) => res.json());
 
       setBlob(newBlob);
-      setModalContent("Archivo subido exitosamente.");
+      setModalContent("File uploaded successfully.");
       setShowModal(true);
 
       // Notify API call succeeded
       await notifyApiCall("pokemon/pikachu", "POST");
-      console.log(modalContent);
     } catch (error) {
-      setModalContent("Error al subir el archivo.");
+      setModalContent("Error uploading file.");
       setShowModal(true);
 
       // Notify API call failed
       await notifyApiCall("invalid-endpoint", "POST"); // This endpoint does not exist
-      console.log(modalContent);
     }
   };
 
   return (
-    <>
-      <h1>Upload Your Avatar</h1>
-
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="file-input">Seleccione archivo:</label>
-        <input
-          id="file-input"
-          name="file"
-          ref={inputFileRef}
-          type="file"
-          required
-        />
-        <button type="submit">Upload</button>
-      </form>
-
-      {blob && (
-        <div>
-          Blob url: <a href={blob.url}>{blob.url}</a>
-        </div>
-      )}
-
-      {/* Modal for notifications */}
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowModal(false)}>
-              &times;
-            </span>
-            <p>{modalContent}</p>
+    <div className="flex items-center justify-center h-full min-h-screen bg-black">
+      <div className="text-center p-4 shadow-md rounded-lg bg-gray-950">
+        <h1 className="text-2xl font-bold mb-4 text-white">
+          Upload Your Avatar
+        </h1>
+        <UploadForm inputFileRef={inputFileRef} handleSubmit={handleSubmit} />
+        {blob && (
+          <div className="mt-4 text-white">
+            Blob url:{" "}
+            <a href={blob.url} className="text-blue-500">
+              {blob.url}
+            </a>
           </div>
-        </div>
-      )}
-    </>
+        )}
+        <Modal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          modalContent={modalContent}
+        />
+      </div>
+    </div>
   );
 }

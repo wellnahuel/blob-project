@@ -1,5 +1,6 @@
 import { list } from "@vercel/blob";
-import DownloadButton from "./download-button";
+import DeleteButton from "./delete-button";
+import { DownloadButton } from "./download-button";
 
 export default async function AllFiles() {
   const { blobs } = await list();
@@ -9,7 +10,8 @@ export default async function AllFiles() {
       all files
       {blobs.map((blob) => (
         <div key={blob.url}>
-          {blob.pathname} - <DownloadButton url={blob.url} />
+          {blob.pathname} - <DeleteButton url={blob.url} /> -{" "}
+          <DownloadButton url={blob.url} />
         </div>
       ))}
     </div>

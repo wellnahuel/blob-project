@@ -1,7 +1,6 @@
 "use client";
 
 import { type PutBlobResult } from "@vercel/blob";
-import { upload } from "@vercel/blob/client";
 import { useRef, useState } from "react";
 
 export default function AvatarUploadPage() {
@@ -51,27 +50,29 @@ export default function AvatarUploadPage() {
       setShowModal(true);
 
       // Start uploading the file
-      const newBlob = await upload(file.name, file, {
-        access: "public",
-        handleUploadUrl: "/api/avatar/upload",
-      });
+      // Enviar el archivo junto con su nombre
+      const newBlob = await fetch(
+        `/api/avatar/upload?filename=${encodeURIComponent(file.name)}`,
+        {
+          method: "POST",
+          body: file,
+        }
+      ).then((res) => res.json());
 
       setBlob(newBlob);
+      setModalContent("Archivo subido exitosamente.");
+      setShowModal(true);
 
       // Notify API call succeeded
-      setModalContent("Archivo subido exitosamente.");
-      console.log(modalContent);
-
-      setShowModal(true);
       await notifyApiCall("pokemon/pikachu", "POST");
+      console.log(modalContent);
     } catch (error) {
       setModalContent("Error al subir el archivo.");
-      console.log(modalContent);
-
       setShowModal(true);
 
       // Notify API call failed
       await notifyApiCall("invalid-endpoint", "POST"); // This endpoint does not exist
+      console.log(modalContent);
     }
   };
 

@@ -13,6 +13,7 @@ export async function DELETE(request: Request) {
 export async function POST(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   const filename = searchParams.get("filename") || "";
+  console.log({ filename });
 
   if (filename && request.body) {
     const blob = await put(filename, request.body, {

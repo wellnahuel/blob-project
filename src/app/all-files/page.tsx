@@ -1,6 +1,6 @@
 import { list } from "@vercel/blob";
-import DeleteButton from "./delete-button";
-import { DownloadButton } from "./download-button";
+import DeleteButton from "./components/delete-button";
+import { DownloadButton } from "./components/download-button";
 
 export default async function AllFiles() {
   const { blobs } = await list();

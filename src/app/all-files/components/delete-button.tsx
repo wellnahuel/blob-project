@@ -30,7 +30,7 @@ export default function DeleteButton({ url }: Props) {
   return (
     <button
       onClick={async () => {
-        await fetch(`/api/avatar/upload`, {
+        await fetch(`/api/delete`, {
           method: "DELETE",
           body: JSON.stringify({ url }),
         });

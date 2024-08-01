@@ -8,13 +8,10 @@ type Props = {
 
 export default function DownloadButton({ url }: Props) {
   const router = useRouter();
-  const handleClick = async () => {
+  /* const handleClick = async () => {
     try {
       const response = await fetch(`/api/file`, {
         method: "DELETE",
-        /* headers: {
-          "Content-Type": "application/json",
-        }, */
         body: JSON.stringify({ url }),
       });
       router.refresh();
@@ -28,7 +25,19 @@ export default function DownloadButton({ url }: Props) {
     } catch (error) {
       console.error("Error deleting file:", error);
     }
-  };
+  }; */
 
-  return <button onClick={handleClick}>DOWNLOAD</button>;
+  return (
+    <button
+      onClick={async () => {
+        await fetch(`/api/avatar/upload`, {
+          method: "DELETE",
+          body: JSON.stringify({ url }),
+        });
+        router.refresh();
+      }}
+    >
+      DOWNLOAD(en realidad es borrar)
+    </button>
+  );
 }

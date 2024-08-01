@@ -1,18 +1,34 @@
 // pages/api/avatar/upload.ts
 
-import { del } from "@vercel/blob";
-import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
+import { del, put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request: Request) {
   const json = await request.json();
-  console.log(json);
+  console.log({ json });
   await del(json.url);
   return NextResponse.json({});
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const body = (await request.json()) as HandleUploadBody;
+  const { searchParams } = new URL(request.url);
+  const filename = searchParams.get("filename") || "";
+
+  if (filename && request.body) {
+    const blob = await put(filename, request.body, {
+      access: "public",
+    });
+
+    return NextResponse.json(blob);
+  } else {
+    return NextResponse.json(
+      { error: "Filename is required" },
+      { status: 400 }
+    );
+  }
+}
+
+/* const body = (await request.json()) as HandleUploadBody;
 
   try {
     const jsonResponse = await handleUpload({
@@ -20,7 +36,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       request,
       onBeforeGenerateToken: async (
         pathname
-        /* clientPayload */
+       
       ) => {
         // Generate a client token for the browser to upload the file
         // ⚠️ Authenticate and authorize users before generating the token.
@@ -57,5 +73,4 @@ export async function POST(request: Request): Promise<NextResponse> {
       { error: (error as Error).message },
       { status: 400 } // The webhook will retry 5 times waiting for a 200
     );
-  }
-}
+  } */

@@ -19,7 +19,7 @@ The purpose of this application is to enable users to upload files up to 5MB to 
 
 ## Considerations
 
-- Due to time constraints and a health issue with my daughter, I had only 12 hours to work on this project. Consequently, the functionality may not be fully complete.
+- Due to time constraints I had only half day to work on this project. Consequently, the functionality may not be fully complete.
 - The editing feature is not fully functional because of these time limitations; however, all other aspects of the application should work as expected.
 - I have added documentation in each file to aid in understanding the project.
 

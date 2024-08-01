@@ -1,37 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Getting Started
 
-## Getting Started
+This repository was developed as part of a skills evaluation using Next.js for Hire Digital.
 
-First, run the development server:
+The purpose of this application is to enable users to upload files up to 5MB to virtual storage on Vercel, and to view, modify, and delete these files in an intuitive and straightforward interface.
+
+## For New Contributors
+
+### Step-by-Step Instructions
+
+1. Fork this repository.
+2. Sign in to [Vercel](https://vercel.com/). If you don't have an account, please create one.
+3. In the Vercel Dashboard, connect your forked project to your Git repository.
+4. Navigate to "Storage" in the project settings and set up a Blob database.
+5. Open the project using Visual Studio Code or your preferred code editor and run `vercel env pull .env.development.local`.
+6. This will generate a file named ".env.development.local".
+   - Optionally, you may include an environment variable called `BLOB_READ_WRITE_TOKEN="your token"`. You can locate your token in the Vercel platform under the project settings in the "Environment Variables" section.
+7. In the terminal, execute `npm run dev` to start the development server.
+
+## Considerations
+
+- Due to time constraints and a health issue with my daughter, I had only 12 hours to work on this project. Consequently, the functionality may not be fully complete.
+- The editing feature is not fully functional because of these time limitations; however, all other aspects of the application should work as expected.
+- I have added documentation in each file to aid in understanding the project.
+
+### Project Specifications
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Create a button that allows users to upload files <=5MB to Vercel’s blob storage.
+  + Trigger a third-party API (example.com) when the upload process starts.
+  + Trigger a third-party API (example.com) when the upload completes successfully.
+  + Trigger a third-party API (example.com) if the upload fails.
+  + Display a modal if the file size exceeds 5MB, preventing the upload.
+- Once the upload is finished, show a list of links to the uploaded files for downloading.
+- Include a pencil icon next to each link to enable file renaming. A modal with Save and Cancel options should appear for renaming.
+- Display a skeleton loader while loading the list of files.
+  - Add a simulated delay if the list loads too quickly to demonstrate the effect.
+- Add a trash icon next to each link to allow file deletion.
+- Implement error boundaries to manage errors and present an error UI.
+- Ensure that the application's state persists through page refreshes.
+
+Libraries
+  - Use shadcn/ui or Radix UI.
+  - Utilize Next.js 14 with App Router and Server Actions.
+  - Maintain a Git repository for code changes and commits.
+  - Deploy the application to Vercel.
+  - Include brief documentation in README.md to highlight key aspects for new contributors.
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# blob-project
